@@ -1,21 +1,21 @@
-# Code Island App Store Release Checklist
+# codedock App Store Release Checklist
 
-This checklist covers the iPhone, Live Activity, Dynamic Island, StandBy, Apple Watch app, and watchOS widget Buddy for Code Island.
+This checklist covers the iPhone, Live Activity, Dynamic Island, StandBy, Apple Watch app, and watchOS widget Buddy for codedock.
 
 Current public submission target:
 
 - Version: `1.0.0`
 - Build: `4`
-- Primary working directory: `/Users/fengye/workspace/CodeIsland`
-- Xcode project: `ios/CodeIslandCompanion/CodeIslandCompanion.xcodeproj`
+- Primary working directory: `/Users/fengye/workspace/codedock`
+- Xcode project: `ios/CodedockCompanion/CodedockCompanion.xcodeproj`
 
 ## Before Uploading a Build
 
 1. Confirm Apple Developer signing is selected for every target:
-   - `CodeIslandCompanion`
-   - `CodeIslandCompanionWidget`
-   - `CodeIslandWatchApp`
-   - `CodeIslandWatchWidget`
+   - `CodedockCompanion`
+   - `CodedockCompanionWidget`
+   - `CodedockWatchApp`
+   - `CodedockWatchWidget`
 
 2. Confirm the app can be reviewed without a Mac:
    - Launch the iPhone app.
@@ -24,8 +24,8 @@ Current public submission target:
    - Open the Apple Watch app and confirm it receives the demo state.
 
 3. Confirm the real Mac path still works:
-   - Run the matching Code Island Mac build from this branch.
-   - Open Code Island Settings -> Buddy.
+   - Run the matching codedock Mac build from this branch.
+   - Open codedock Settings -> Buddy.
    - Enable iPhone Buddy broadcasting.
    - Connect from iPhone and verify state updates.
 
@@ -59,7 +59,7 @@ Current intended privacy posture:
 - Tracking: no tracking.
 - Third-party advertising: none.
 - Account creation: none.
-- Local network: used only to discover and communicate with the user's own Mac running Code Island.
+- Local network: used only to discover and communicate with the user's own Mac running codedock.
 - Bluetooth: used only as a lightweight local Buddy signal between the user's own devices.
 
 If new analytics, crash reporting, cloud sync, or third-party SDKs are added later, update these answers before submission.

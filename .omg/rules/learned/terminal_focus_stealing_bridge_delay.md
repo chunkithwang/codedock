@@ -1,7 +1,7 @@
 ---
 name: terminal_focus_stealing_bridge_delay
 description: Delay pattern in blocking hook bridges to prevent GUI notification Notch from stealing focus before the terminal prints the prompt.
-globs: Sources/CodeIslandBridge/**/*.swift
+globs: Sources/CodedockBridge/**/*.swift
 ---
 
 # Terminal Focus Stealing Prevention

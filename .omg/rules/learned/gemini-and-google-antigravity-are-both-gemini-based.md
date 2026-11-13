@@ -3,14 +3,14 @@ name: gemini-and-google-antigravity-are-both-gemini-based
 description: >
   "--source gemini" (agy CLI, hooks in ~/.gemini/settings.json) and
   "--source google-antigravity" (hooks in ~/.gemini/config/hooks.json under
-  "codeisland" key) are two different products but share the same hook payload
+  "codedock" key) are two different products but share the same hook payload
   structure. All permission routing, payload normalization, and cwd injection
   must handle both. Use a named boolean like isGeminiBasedSource rather than
   duplicating inline source checks.
 globs:
-  - "Sources/CodeIslandBridge/main.swift"
-  - "Sources/CodeIsland/HookServer.swift"
-  - "Sources/CodeIsland/ConfigInstaller.swift"
+  - "Sources/CodedockBridge/main.swift"
+  - "Sources/Codedock/HookServer.swift"
+  - "Sources/Codedock/ConfigInstaller.swift"
 ---
 
 ## Pattern
@@ -20,7 +20,7 @@ Two separate CLI products use Gemini's hook protocol and share payload structure
 | Source tag | Product | Hook config location | Event format |
 |------------|---------|---------------------|--------------|
 | `gemini` | Gemini CLI / `agy` | `~/.gemini/settings.json` → `hooks` key | `BeforeTool`, `AfterTool`, etc. in config; `PreToolUse` in JSON |
-| `google-antigravity` | Google Antigravity IDE/CLI | `~/.gemini/config/hooks.json` → `codeisland` key | PascalCase `PreToolUse`, `PostToolUse`, `Stop` |
+| `google-antigravity` | Google Antigravity IDE/CLI | `~/.gemini/config/hooks.json` → `codedock` key | PascalCase `PreToolUse`, `PostToolUse`, `Stop` |
 
 Despite different configs and hook-name conventions, both products:
 - Send `hook_event_name: "PreToolUse"` in the actual JSON payload for tool events
@@ -53,4 +53,4 @@ if sourceTag == "google-antigravity" && normalizedEventName == "PreToolUse" { ..
 Both sources need:
 1. `PreToolUse` → permission routing (blocking)
 2. `cwd` injected from the bridge's working directory
-3. Response translation: CodeIsland's `hookSpecificOutput.decision.behavior` → `{"decision": "allow"/"deny"}`
+3. Response translation: codedock's `hookSpecificOutput.decision.behavior` → `{"decision": "allow"/"deny"}`

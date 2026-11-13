@@ -2,8 +2,12 @@
 import PackageDescription
 
 let package = Package(
-    name: "CodeIsland",
+    name: "codedock",
     platforms: [.macOS(.v14)],
+    products: [
+        .executable(name: "codedock", targets: ["Codedock"]),
+        .executable(name: "codedock-bridge", targets: ["CodedockBridge"]),
+    ],
     dependencies: [
         // Sparkle — auto-update framework. Pinned to 2.6+ for stable
         // SPUStandardUpdaterController + ed25519 signature verification.
@@ -12,38 +16,38 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "CodeIslandCore",
-            path: "Sources/CodeIslandCore"
+            name: "CodedockCore",
+            path: "Sources/CodedockCore"
         ),
         .executableTarget(
-            name: "CodeIsland",
+            name: "Codedock",
             dependencies: [
-                "CodeIslandCore",
+                "CodedockCore",
                 .product(name: "Sparkle", package: "Sparkle"),
                 .product(name: "Yams", package: "Yams"),
             ],
-            path: "Sources/CodeIsland",
+            path: "Sources/Codedock",
             resources: [
                 .copy("Resources")
             ]
         ),
         .executableTarget(
-            name: "codeisland-bridge",
-            dependencies: ["CodeIslandCore"],
-            path: "Sources/CodeIslandBridge"
+            name: "CodedockBridge",
+            dependencies: ["CodedockCore"],
+            path: "Sources/CodedockBridge"
         ),
         .testTarget(
-            name: "CodeIslandCoreTests",
-            dependencies: ["CodeIslandCore"],
-            path: "Tests/CodeIslandCoreTests"
+            name: "CodedockCoreTests",
+            dependencies: ["CodedockCore"],
+            path: "Tests/CodedockCoreTests"
         ),
         .testTarget(
-            name: "CodeIslandTests",
+            name: "CodedockTests",
             dependencies: [
-                "CodeIsland",
+                "Codedock",
                 .product(name: "Yams", package: "Yams"),
             ],
-            path: "Tests/CodeIslandTests"
+            path: "Tests/CodedockTests"
         ),
     ]
 )

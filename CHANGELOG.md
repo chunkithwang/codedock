@@ -85,7 +85,7 @@
 ## [v1.0.28] - 2026-06-15
 
 ### English
-- Add Code Island Buddy companion app for iPhone & Apple Watch — Live Activity / Dynamic Island / Lock Screen / StandBy, with opt-in Mac broadcasting (off by default) (#218)
+- Add codedock Buddy companion app for iPhone & Apple Watch — Live Activity / Dynamic Island / Lock Screen / StandBy, with opt-in Mac broadcasting (off by default) (#218)
 - Add support for Pi / Oh My Pi sessions with a dedicated mascot (#222)
 - Add support for Google Antigravity (Gemini-based) hooks as a new agent source (#215)
 - Detect Superset terminal sessions (window-level focus; Superset exposes no per-tab focus API) (#213)
@@ -100,7 +100,7 @@
 - Fix Warp tab activation across multiple windows and tabs (#205)
 
 ### 中文
-- 新增 Code Island Buddy iPhone / Apple Watch 伴侣 App——Live Activity / 灵动岛 / 锁屏 / 待机显示，Mac 端可选开启镜像广播（默认关闭）(#218)
+- 新增 codedock Buddy iPhone / Apple Watch 伴侣 App——Live Activity / 灵动岛 / 锁屏 / 待机显示，Mac 端可选开启镜像广播（默认关闭）(#218)
 - 新增 Pi / Oh My Pi 会话支持，配专属吉祥物 (#222)
 - 新增 Google Antigravity（基于 Gemini）hooks 支持，作为独立 agent 来源 (#215)
 - 识别 Superset 终端会话（窗口级聚焦；Superset 未提供单 tab 聚焦接口）(#213)
@@ -128,13 +128,13 @@
 
 ### English
 - Add pi / Oh My Pi (OMP) coding agent integration — auto-install the bundled extension into `~/.pi/agent/extensions` and `~/.omp/agent/extensions` (#197)
-- Isolate the remote SSH socket per user (`/tmp/codeisland-<uid>.sock`) so multiple OS users on a shared host no longer collide or steal each other's events (#193)
+- Isolate the remote SSH socket per user (`/tmp/codedock-<uid>.sock`) so multiple OS users on a shared host no longer collide or steal each other's events (#193)
 - Fix the SSH tunnel being misreported as `ssh exited (0)` when ControlMaster multiplexing makes `ssh -N` hand off the forward and exit immediately — force a dedicated connection (#190)
 - Fix iTerm2 click-to-jump landing on the wrong window when the target session is fullscreen or on another Space — select the owning window so macOS switches to its Space (#198)
 
 ### 中文
 - 新增 pi / Oh My Pi (OMP) 编码 agent 集成——自动把扩展装到 `~/.pi/agent/extensions` 和 `~/.omp/agent/extensions` (#197)
-- 远程 SSH socket 改为按用户隔离（`/tmp/codeisland-<uid>.sock`），多用户共享主机不再互相串话或抢占事件 (#193)
+- 远程 SSH socket 改为按用户隔离（`/tmp/codedock-<uid>.sock`），多用户共享主机不再互相串话或抢占事件 (#193)
 - 修复 SSH 隧道在 ControlMaster 多路复用下 `ssh -N` 立即退出、被误报为 `ssh exited (0)` 的问题——强制独占连接 (#190)
 - 修复 iTerm2 全屏 / 跨 Space 时点击会话跳到错误窗口——命中后选中目标窗口以触发 Space 切换 (#198)
 
@@ -145,13 +145,13 @@
 - Make auto-approve tools configurable in Settings; default no longer auto-approves `ExitPlanMode` so plan-mode exit prompts an approval dialog (#126)
 - Fix TraeCli YAML hook injection corruption on mixed indentation; preserve user comments via surgical merge (#122)
 - Respect `$CODEX_HOME` in codex auto-config (local + ssh) (#129)
-- Add WorkBuddy bundle ID for one-click jump from CodeIsland (#130)
+- Add WorkBuddy bundle ID for one-click jump from codedock (#130)
 - Fix remote SSH sessions being force-flipped to idle on local timeout (#121)
 - Fix Ghostty click-to-jump no-op via System Events Accessibility fallback (#84)
 - Fix Terminal.app: minimized window not raising + multi-tab clicks all jumping to same tab (root cause: AppleScript `tty` variable shadowed Terminal.app's tab `tty` property) (#124)
 - Add configurable cwd-substring blocklist for hook events — filter out background plugins like claude-mem (#125)
 - Add webhook forwarding for hook events to external HTTP endpoints — pipe agent activity into DingTalk / Lark / Slack receivers (#115)
-- Add minimum Kiro CLI support — install hooks into `~/.kiro/agents/codeisland.json` (launch with `kiro --agent codeisland`) (#127)
+- Add minimum Kiro CLI support — install hooks into `~/.kiro/agents/codedock.json` (launch with `kiro --agent codedock`) (#127)
 
 ### 中文
 - 新增 ESP32 BLE 桌面伴侣设备——把吉祥物动画移植到实体小屏 (#131)
@@ -164,7 +164,7 @@
 - 修复 Terminal.app 最小化无法打开 + 多终端点哪个都跳同一 tab（真 root cause：AppleScript 局部变量 `tty` 跟 tab property `tty` 同名导致 Strategy 1 静默失效）(#124)
 - 设置里新增"忽略指定路径的 Hook"——按子串过滤 claude-mem 等后台插件触发的事件 (#125)
 - 设置里新增"Webhook 转发"——hook 事件以 JSON POST 到外部端点，方便对接钉钉/飞书/Slack (#115)
-- 新增 Kiro CLI 最小可用支持——hooks 写到 `~/.kiro/agents/codeisland.json`，启动用 `kiro --agent codeisland` (#127)
+- 新增 Kiro CLI 最小可用支持——hooks 写到 `~/.kiro/agents/codedock.json`，启动用 `kiro --agent codedock` (#127)
 
 ## [v1.0.15] - 2026-04-07
 
@@ -201,7 +201,7 @@
 ## [v1.0.7] - 2026-04-07
 
 ### English
-- Add Homebrew Cask distribution support (`brew install --cask codeisland`)
+- Add Homebrew Cask distribution support (`brew install --cask codedock`)
 - Add in-app auto-update: download, install and relaunch without leaving the app
 - Add "Check for Updates" button in Settings → About
 - Detect Homebrew installs and suggest `brew upgrade` instead of auto-update
@@ -212,7 +212,7 @@
 - Hide project name in tool status area when no tool is running
 
 ### 中文
-- 新增 Homebrew Cask 分发支持（`brew install --cask codeisland`）
+- 新增 Homebrew Cask 分发支持（`brew install --cask codedock`）
 - 新增 App 内自动更新：下载、安装并重启，无需离开应用
 - 设置 → 关于页面新增"检查更新"按钮
 - 检测 Homebrew 安装并建议使用 `brew upgrade` 更新

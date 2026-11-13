@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # Usage: ./scripts/update-appcast.sh <version> <dmg-path>
-# Example: ./scripts/update-appcast.sh 1.0.22 .build/CodeIsland.dmg
+# Example: ./scripts/update-appcast.sh 1.0.22 .build/codedock.dmg
 #
 # Produces / updates appcast.xml at the repo root. Signs the DMG with the
 # private EdDSA key that lives in the macOS Keychain (added by Sparkle's
@@ -13,7 +13,7 @@ set -euo pipefail
 #   - A prior `swift build -c release` has populated .build/artifacts so
 #     Sparkle's sign_update binary is on disk.
 #   - The DMG is uploaded to
-#       https://github.com/wxtsky/CodeIsland/releases/download/v<version>/CodeIsland.dmg
+#       https://github.com/chunkithwang/codedock/releases/download/v<version>/codedock.dmg
 #     (the default asset URL from build-dmg.sh + `gh release create`).
 
 VERSION="${1:-}"
@@ -40,7 +40,7 @@ fi
 # ---------------------------------------------------------------------------
 # Collect fields for the <enclosure> tag
 # ---------------------------------------------------------------------------
-DOWNLOAD_URL="https://github.com/wxtsky/CodeIsland/releases/download/v${VERSION}/CodeIsland.dmg"
+DOWNLOAD_URL="https://github.com/chunkithwang/codedock/releases/download/v${VERSION}/codedock.dmg"
 PUB_DATE="$(LC_TIME=en_US.UTF-8 date -u "+%a, %d %b %Y %H:%M:%S +0000")"
 LENGTH="$(stat -f%z "$DMG_PATH")"
 MIN_OS="14.0"
@@ -60,7 +60,7 @@ fi
 # ---------------------------------------------------------------------------
 NEW_ITEM="    <item>
       <title>Version ${VERSION}</title>
-      <link>https://github.com/wxtsky/CodeIsland/releases/tag/v${VERSION}</link>
+      <link>https://github.com/chunkithwang/codedock/releases/tag/v${VERSION}</link>
       <sparkle:version>${VERSION}</sparkle:version>
       <sparkle:shortVersionString>${VERSION}</sparkle:shortVersionString>
       <sparkle:minimumSystemVersion>${MIN_OS}</sparkle:minimumSystemVersion>
@@ -83,9 +83,9 @@ if [[ ! -f "$APPCAST" ]]; then
      xmlns:dc="http://purl.org/dc/elements/1.1/"
      version="2.0">
   <channel>
-    <title>CodeIsland</title>
-    <link>https://raw.githubusercontent.com/wxtsky/CodeIsland/main/appcast.xml</link>
-    <description>Most recent CodeIsland updates</description>
+    <title>codedock</title>
+    <link>https://raw.githubusercontent.com/chunkithwang/codedock/main/appcast.xml</link>
+    <description>Most recent codedock updates</description>
     <language>en</language>
 ${NEW_ITEM}
   </channel>

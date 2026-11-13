@@ -8,9 +8,9 @@ description: >
   flag only as fallback, any code that intercepts BeforeTool must also handle
   PreToolUse from --source gemini.
 globs:
-  - "Sources/CodeIslandBridge/main.swift"
-  - "Sources/CodeIsland/HookServer.swift"
-  - "Sources/CodeIsland/ConfigInstaller.swift"
+  - "Sources/CodedockBridge/main.swift"
+  - "Sources/Codedock/HookServer.swift"
+  - "Sources/Codedock/ConfigInstaller.swift"
 ---
 
 ## Pattern

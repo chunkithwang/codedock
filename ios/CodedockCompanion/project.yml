@@ -1,0 +1,185 @@
+name: CodedockCompanion
+options:
+  bundleIdPrefix: top.fengye
+  deploymentTarget:
+    iOS: "17.0"
+    watchOS: "10.0"
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    DEVELOPMENT_TEAM: "6SLN844AVD"
+    CODE_SIGN_STYLE: Automatic
+    CURRENT_PROJECT_VERSION: "4"
+    MARKETING_VERSION: "1.0.0"
+targets:
+  CodedockCompanion:
+    type: application
+    platform: iOS
+    deploymentTarget: "17.0"
+    sources:
+      - path: CodedockCompanion
+      - path: Shared
+      - path: ../../Sources/Codedock/AntiGravityView.swift
+      - path: ../../Sources/Codedock/BuddyView.swift
+      - path: ../../Sources/Codedock/ClineView.swift
+      - path: ../../Sources/Codedock/CopilotView.swift
+      - path: ../../Sources/Codedock/CursorView.swift
+      - path: ../../Sources/Codedock/DexView.swift
+      - path: ../../Sources/Codedock/DroidView.swift
+      - path: ../../Sources/Codedock/GeminiView.swift
+      - path: ../../Sources/Codedock/HermesView.swift
+      - path: ../../Sources/Codedock/KimiView.swift
+      - path: ../../Sources/Codedock/OpenCodeView.swift
+      - path: ../../Sources/Codedock/PixelCharacterView.swift
+      - path: ../../Sources/Codedock/QoderView.swift
+      - path: ../../Sources/Codedock/QwenView.swift
+      - path: ../../Sources/Codedock/StepFunView.swift
+      - path: ../../Sources/Codedock/TraeView.swift
+      - path: ../../Sources/Codedock/WorkBuddyView.swift
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: top.fengye.CodedockCompanion
+        INFOPLIST_FILE: CodedockCompanion/Info.plist
+        TARGETED_DEVICE_FAMILY: "1,2"
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS: NO
+    dependencies:
+      - target: CodedockCompanionWidget
+        embed: true
+      - target: CodedockWatchApp
+        embed: true
+      - sdk: AppIntents.framework
+      - sdk: WatchConnectivity.framework
+  CodedockCompanionWidget:
+    type: app-extension
+    platform: iOS
+    deploymentTarget: "17.0"
+    sources:
+      - path: CodedockCompanionWidget
+      - path: Shared
+      - path: ../../Sources/Codedock/AntiGravityView.swift
+      - path: ../../Sources/Codedock/BuddyView.swift
+      - path: ../../Sources/Codedock/ClineView.swift
+      - path: ../../Sources/Codedock/CopilotView.swift
+      - path: ../../Sources/Codedock/CursorView.swift
+      - path: ../../Sources/Codedock/DexView.swift
+      - path: ../../Sources/Codedock/DroidView.swift
+      - path: ../../Sources/Codedock/GeminiView.swift
+      - path: ../../Sources/Codedock/HermesView.swift
+      - path: ../../Sources/Codedock/KimiView.swift
+      - path: ../../Sources/Codedock/OpenCodeView.swift
+      - path: ../../Sources/Codedock/PixelCharacterView.swift
+      - path: ../../Sources/Codedock/QoderView.swift
+      - path: ../../Sources/Codedock/QwenView.swift
+      - path: ../../Sources/Codedock/StepFunView.swift
+      - path: ../../Sources/Codedock/TraeView.swift
+      - path: ../../Sources/Codedock/WorkBuddyView.swift
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: top.fengye.CodedockCompanion.Widget
+        INFOPLIST_FILE: CodedockCompanionWidget/Info.plist
+        TARGETED_DEVICE_FAMILY: "1,2"
+        ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS: NO
+        SKIP_INSTALL: YES
+  CodedockWatchApp:
+    type: application
+    platform: watchOS
+    deploymentTarget: "10.0"
+    sources:
+      - path: CodedockWatchApp
+      - path: CodedockCompanion/CompanionModels.swift
+      - path: Shared/CompanionDisplayText.swift
+      - path: Shared/SharedMascotView.swift
+      - path: Shared/WatchStateStore.swift
+      - path: ../../Sources/Codedock/AntiGravityView.swift
+      - path: ../../Sources/Codedock/BuddyView.swift
+      - path: ../../Sources/Codedock/ClineView.swift
+      - path: ../../Sources/Codedock/CopilotView.swift
+      - path: ../../Sources/Codedock/CursorView.swift
+      - path: ../../Sources/Codedock/DexView.swift
+      - path: ../../Sources/Codedock/DroidView.swift
+      - path: ../../Sources/Codedock/GeminiView.swift
+      - path: ../../Sources/Codedock/HermesView.swift
+      - path: ../../Sources/Codedock/KimiView.swift
+      - path: ../../Sources/Codedock/OpenCodeView.swift
+      - path: ../../Sources/Codedock/PixelCharacterView.swift
+      - path: ../../Sources/Codedock/QoderView.swift
+      - path: ../../Sources/Codedock/QwenView.swift
+      - path: ../../Sources/Codedock/StepFunView.swift
+      - path: ../../Sources/Codedock/TraeView.swift
+      - path: ../../Sources/Codedock/WorkBuddyView.swift
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: top.fengye.CodedockCompanion.watchkitapp
+        INFOPLIST_FILE: CodedockWatchApp/Info.plist
+        CODE_SIGN_ENTITLEMENTS: CodedockWatchApp/CodedockWatchApp.entitlements
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS: NO
+    dependencies:
+      - target: CodedockWatchWidget
+        embed: true
+      - sdk: WatchConnectivity.framework
+  CodedockWatchWidget:
+    type: app-extension
+    platform: watchOS
+    deploymentTarget: "10.0"
+    sources:
+      - path: CodedockWatchWidget
+      - path: CodedockCompanion/CompanionModels.swift
+      - path: Shared/CompanionDisplayText.swift
+      - path: Shared/SharedMascotView.swift
+      - path: Shared/WatchStateStore.swift
+      - path: ../../Sources/Codedock/AntiGravityView.swift
+      - path: ../../Sources/Codedock/BuddyView.swift
+      - path: ../../Sources/Codedock/ClineView.swift
+      - path: ../../Sources/Codedock/CopilotView.swift
+      - path: ../../Sources/Codedock/CursorView.swift
+      - path: ../../Sources/Codedock/DexView.swift
+      - path: ../../Sources/Codedock/DroidView.swift
+      - path: ../../Sources/Codedock/GeminiView.swift
+      - path: ../../Sources/Codedock/HermesView.swift
+      - path: ../../Sources/Codedock/KimiView.swift
+      - path: ../../Sources/Codedock/OpenCodeView.swift
+      - path: ../../Sources/Codedock/PixelCharacterView.swift
+      - path: ../../Sources/Codedock/QoderView.swift
+      - path: ../../Sources/Codedock/QwenView.swift
+      - path: ../../Sources/Codedock/StepFunView.swift
+      - path: ../../Sources/Codedock/TraeView.swift
+      - path: ../../Sources/Codedock/WorkBuddyView.swift
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: top.fengye.CodedockCompanion.watchkitapp.Widget
+        INFOPLIST_FILE: CodedockWatchWidget/Info.plist
+        CODE_SIGN_ENTITLEMENTS: CodedockWatchWidget/CodedockWatchWidget.entitlements
+        ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS: NO
+        SKIP_INSTALL: YES
+  CodedockCompanionUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    deploymentTarget: "17.0"
+    sources:
+      - path: CodedockCompanionUITests
+      - path: CodedockCompanion/StandByLayout.swift
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: top.fengye.CodedockCompanionUITests
+        GENERATE_INFOPLIST_FILE: YES
+        TEST_TARGET_NAME: CodedockCompanion
+        TARGETED_DEVICE_FAMILY: "1,2"
+    dependencies:
+      - target: CodedockCompanion
+schemes:
+  CodedockCompanion:
+    build:
+      targets:
+        CodedockCompanion: all
+        CodedockCompanionWidget: all
+        CodedockWatchApp: all
+        CodedockWatchWidget: all
+        CodedockCompanionUITests: [test]
+    run:
+      config: Debug
+    test:
+      config: Debug
+      targets:
+        - CodedockCompanionUITests

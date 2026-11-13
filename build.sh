@@ -1,12 +1,34 @@
 #!/bin/bash
 set -euo pipefail
 
-# Ensure Xcode.app toolchain is used even if xcode-select points at CLT
-if [ -d /Applications/Xcode.app/Contents/Developer ]; then
-    export DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer
+# Ensure the full Xcode toolchain is used even if xcode-select points at CLT.
+# Respect an already-working DEVELOPER_DIR, then check the standard location
+# and Xcode installations kept on mounted external volumes.
+if ! xcrun --find actool >/dev/null 2>&1; then
+    shopt -s nullglob
+    XCODE_CANDIDATES=(
+        /Applications/Xcode.app
+        /Volumes/*/Applications/Xcode.app
+    )
+    shopt -u nullglob
+
+    for XCODE_APP in "${XCODE_CANDIDATES[@]}"; do
+        XCODE_DEVELOPER_DIR="$XCODE_APP/Contents/Developer"
+        if [ -d "$XCODE_DEVELOPER_DIR" ] \
+            && DEVELOPER_DIR="$XCODE_DEVELOPER_DIR" xcrun --find actool >/dev/null 2>&1; then
+            export DEVELOPER_DIR="$XCODE_DEVELOPER_DIR"
+            break
+        fi
+    done
 fi
 
-APP_NAME="CodeIsland"
+if ! xcrun --find actool >/dev/null 2>&1; then
+    echo "Full Xcode toolchain not found (actool is unavailable)." >&2
+    echo "Install Xcode or set DEVELOPER_DIR to Xcode.app/Contents/Developer." >&2
+    exit 1
+fi
+
+APP_NAME="codedock"
 BUILD_DIR=".build/release"
 APP_BUNDLE="$BUILD_DIR/$APP_NAME.app"
 ICON_CATALOG="Assets.xcassets"
@@ -82,7 +104,7 @@ build_mac() {
     mkdir -p "$APP_BUNDLE/Contents/Frameworks"
 
     cp "$ARM_DIR/$APP_NAME" "$APP_BUNDLE/Contents/MacOS/$APP_NAME"
-    cp "$ARM_DIR/codeisland-bridge" "$APP_BUNDLE/Contents/Helpers/codeisland-bridge"
+    cp "$ARM_DIR/codedock-bridge" "$APP_BUNDLE/Contents/Helpers/codedock-bridge"
     cp Info.plist "$APP_BUNDLE/Contents/Info.plist"
 
     echo "Embedding frameworks..."
@@ -98,7 +120,7 @@ build_mac() {
     install_name_tool -add_rpath "@executable_path/../Frameworks" \
         "$APP_BUNDLE/Contents/MacOS/$APP_NAME" 2>/dev/null || true
     install_name_tool -add_rpath "@executable_path/../../Frameworks" \
-        "$APP_BUNDLE/Contents/Helpers/codeisland-bridge" 2>/dev/null || true
+        "$APP_BUNDLE/Contents/Helpers/codedock-bridge" 2>/dev/null || true
 
     echo "Compiling app icon assets..."
     xcrun actool \
@@ -114,7 +136,20 @@ build_mac() {
         --compile "$APP_BUNDLE/Contents/Resources" \
         "$ICON_CATALOG" \
         "$ICON_SOURCE"
-    cp "Sources/CodeIsland/Resources/AppIcon.icns" "$APP_BUNDLE/Contents/Resources/AppIcon.icns"
+    # actool emits the current Icon Composer design as AppIcon.icns. Only use
+    # the checked-in file when the toolchain did not generate one; copying it
+    # unconditionally would replace the current full-size icon with a stale
+    # fallback whose visible Dock container is substantially smaller.
+    if [ ! -s "$APP_BUNDLE/Contents/Resources/AppIcon.icns" ]; then
+        if [ -s "Sources/Codedock/Resources/AppIcon.icns" ]; then
+            cp "Sources/Codedock/Resources/AppIcon.icns" \
+                "$APP_BUNDLE/Contents/Resources/AppIcon.icns"
+            echo "Copied fallback AppIcon.icns"
+        else
+            echo "AppIcon.icns was not generated and no fallback icon exists." >&2
+            exit 1
+        fi
+    fi
 
     # Copy SPM resource bundles into Contents/Resources/ (required for code signing)
     for bundle in .build/*/release/*.bundle; do
@@ -124,7 +159,7 @@ build_mac() {
         fi
     done
 
-    ENTITLEMENTS="CodeIsland.entitlements"
+    ENTITLEMENTS="codedock.entitlements"
 
     # Use SIGN_ID env var, or auto-detect: prefer "Developer ID Application" for distribution,
     # fall back to any valid identity, then ad-hoc
@@ -155,7 +190,7 @@ build_mac() {
     fi
     codesign --force --options runtime --sign "$SIGN_ID" "$SPARKLE_FW"
 
-    codesign --force --options runtime --sign "$SIGN_ID" "$APP_BUNDLE/Contents/Helpers/codeisland-bridge"
+    codesign --force --options runtime --sign "$SIGN_ID" "$APP_BUNDLE/Contents/Helpers/codedock-bridge"
     codesign --force --options runtime --sign "$SIGN_ID" --entitlements "$ENTITLEMENTS" "$APP_BUNDLE"
 
     if [ "$NOTARIZE" = true ] && [[ "$SIGN_ID" == *"Developer ID"* ]]; then
@@ -164,11 +199,11 @@ build_mac() {
         ditto -c -k --keepParent "$APP_BUNDLE" "$ZIP_PATH"
 
         echo "Submitting for notarization..."
-        if xcrun notarytool submit "$ZIP_PATH" --keychain-profile "CodeIsland" --wait 2>&1 | tee /dev/stderr | grep -q "status: Accepted"; then
+        if xcrun notarytool submit "$ZIP_PATH" --keychain-profile "codedock" --wait 2>&1 | tee /dev/stderr | grep -q "status: Accepted"; then
             echo "Stapling notarization ticket..."
             xcrun stapler staple "$APP_BUNDLE"
         else
-            echo "ERROR: Notarization failed. Run 'xcrun notarytool log <submission-id> --keychain-profile CodeIsland' for details."
+            echo "ERROR: Notarization failed. Run 'xcrun notarytool log <submission-id> --keychain-profile codedock' for details."
             rm -f "$ZIP_PATH"
             exit 1
         fi
@@ -204,7 +239,7 @@ build_mac() {
 
         codesign --force --sign "$SIGN_ID" "$DMG_PATH"
         echo "Notarizing DMG..."
-        if xcrun notarytool submit "$DMG_PATH" --keychain-profile "CodeIsland" --wait 2>&1 | tee /dev/stderr | grep -q "status: Accepted"; then
+        if xcrun notarytool submit "$DMG_PATH" --keychain-profile "codedock" --wait 2>&1 | tee /dev/stderr | grep -q "status: Accepted"; then
             xcrun stapler staple "$DMG_PATH"
             echo "DMG ready: $DMG_PATH"
         else
@@ -213,7 +248,8 @@ build_mac() {
     fi
 
     echo "Done: $APP_BUNDLE"
-    echo "Run: open $APP_BUNDLE"
+    echo "Run: ./script/build_and_run.sh"
+    echo "Open existing build: open $APP_BUNDLE"
 }
 
 if [ "$BUILD_MAC" = true ]; then

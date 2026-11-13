@@ -20,9 +20,9 @@ REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 BUILD_DIR="$REPO_ROOT/.build"
 RELEASE_DIR="$BUILD_DIR/release"
 STAGING_DIR="$BUILD_DIR/dmg-staging"
-APP_DIR="$STAGING_DIR/CodeIsland.app"
+APP_DIR="$STAGING_DIR/codedock.app"
 CONTENTS_DIR="$APP_DIR/Contents"
-OUTPUT_DMG="$BUILD_DIR/CodeIsland.dmg"
+OUTPUT_DMG="$BUILD_DIR/codedock.dmg"
 BUILD_ARCH="${BUILD_ARCH:-universal}"
 
 case "$BUILD_ARCH" in
@@ -34,7 +34,7 @@ case "$BUILD_ARCH" in
         ;;
 esac
 
-echo "==> Building CodeIsland ${VERSION} (${BUILD_ARCH})"
+echo "==> Building codedock ${VERSION} (${BUILD_ARCH})"
 
 cd "$REPO_ROOT"
 case "$BUILD_ARCH" in
@@ -62,17 +62,17 @@ mkdir -p "$CONTENTS_DIR/Resources"
 case "$BUILD_ARCH" in
     universal)
         # Create universal binaries
-        lipo -create "$ARM_DIR/CodeIsland" "$X86_DIR/CodeIsland" \
-             -output "$CONTENTS_DIR/MacOS/CodeIsland"
-        lipo -create "$ARM_DIR/codeisland-bridge" "$X86_DIR/codeisland-bridge" \
-             -output "$CONTENTS_DIR/Helpers/codeisland-bridge"
+        lipo -create "$ARM_DIR/codedock" "$X86_DIR/codedock" \
+             -output "$CONTENTS_DIR/MacOS/codedock"
+        lipo -create "$ARM_DIR/codedock-bridge" "$X86_DIR/codedock-bridge" \
+             -output "$CONTENTS_DIR/Helpers/codedock-bridge"
         ;;
     arm64)
-        cp "$ARM_DIR/CodeIsland" "$CONTENTS_DIR/MacOS/CodeIsland"
-        cp "$ARM_DIR/codeisland-bridge" "$CONTENTS_DIR/Helpers/codeisland-bridge"
+        cp "$ARM_DIR/codedock" "$CONTENTS_DIR/MacOS/codedock"
+        cp "$ARM_DIR/codedock-bridge" "$CONTENTS_DIR/Helpers/codedock-bridge"
         ;;
 esac
-chmod +x "$CONTENTS_DIR/MacOS/CodeIsland" "$CONTENTS_DIR/Helpers/codeisland-bridge"
+chmod +x "$CONTENTS_DIR/MacOS/codedock" "$CONTENTS_DIR/Helpers/codedock-bridge"
 
 # Write Info.plist (use the root Info.plist as base, update version)
 CURRENT_VER=$(defaults read "$REPO_ROOT/Info.plist" CFBundleShortVersionString)
@@ -96,8 +96,8 @@ xcrun actool \
 # unsigned bundles. Keep a checked-in fallback so CI artifacts do not regress to
 # the generic app icon if actool changes its AppIcon.icon output behavior.
 if [ ! -s "$CONTENTS_DIR/Resources/AppIcon.icns" ]; then
-    if [ -s "$REPO_ROOT/Sources/CodeIsland/Resources/AppIcon.icns" ]; then
-        cp "$REPO_ROOT/Sources/CodeIsland/Resources/AppIcon.icns" \
+    if [ -s "$REPO_ROOT/Sources/Codedock/Resources/AppIcon.icns" ]; then
+        cp "$REPO_ROOT/Sources/Codedock/Resources/AppIcon.icns" \
             "$CONTENTS_DIR/Resources/AppIcon.icns"
         echo "==> Copied fallback AppIcon.icns"
     else
@@ -147,8 +147,8 @@ echo "==> Embedded Sparkle.framework from $SPARKLE_SRC"
 # /Frameworks explicitly. Changing the load commands invalidates any prior
 # signature — we re-sign below.
 install_name_tool -add_rpath "@executable_path/../Frameworks" \
-    "$CONTENTS_DIR/MacOS/CodeIsland"
-echo "==> Added @executable_path/../Frameworks rpath to CodeIsland binary"
+    "$CONTENTS_DIR/MacOS/codedock"
+echo "==> Added @executable_path/../Frameworks rpath to codedock binary"
 
 echo "==> App bundle assembled at $APP_DIR"
 
@@ -186,7 +186,7 @@ adhoc_sign_app_for_local_permissions() {
     done
 
     codesign --force --options runtime \
-        --entitlements "$REPO_ROOT/CodeIsland.entitlements" \
+        --entitlements "$REPO_ROOT/codedock.entitlements" \
         --sign - \
         "$APP_DIR"
 }
@@ -226,7 +226,7 @@ elif security find-identity -v -p codesigning | grep -q "$(printf '%s' "$SIGN_ID
     # Finally, sign the main bundle. Entitlements only on the top-level app —
     # Sparkle components have their own entitlements baked into their signatures.
     codesign --force --options runtime --timestamp \
-        --entitlements "$REPO_ROOT/CodeIsland.entitlements" \
+        --entitlements "$REPO_ROOT/codedock.entitlements" \
         --sign "$SIGN_IDENTITY" \
         "$APP_DIR"
 
@@ -246,12 +246,12 @@ rm -f "$OUTPUT_DMG"
 
 if command -v create-dmg >/dev/null 2>&1; then
     create-dmg \
-        --volname "CodeIsland ${VERSION}" \
+        --volname "codedock ${VERSION}" \
         --window-pos 200 120 \
         --window-size 600 400 \
         --icon-size 100 \
-        --icon "CodeIsland.app" 175 190 \
-        --hide-extension "CodeIsland.app" \
+        --icon "codedock.app" 175 190 \
+        --hide-extension "codedock.app" \
         --app-drop-link 425 190 \
         --no-internet-enable \
         --sandbox-safe \
@@ -261,7 +261,7 @@ else
     echo "==> create-dmg not found — using hdiutil fallback"
     ln -sfn /Applications "$STAGING_DIR/Applications"
     hdiutil create \
-        -volname "CodeIsland ${VERSION}" \
+        -volname "codedock ${VERSION}" \
         -srcfolder "$STAGING_DIR" \
         -format UDZO \
         -ov \
@@ -280,11 +280,11 @@ if [ "$APP_SIGNED" = true ]; then
 fi
 
 # ---------------------------------------------------------------------------
-# Notarize + staple. Uses the "CodeIsland" keychain profile by default
-# (xcrun notarytool store-credentials CodeIsland ...). Skippable via
+# Notarize + staple. Uses the "codedock" keychain profile by default
+# (xcrun notarytool store-credentials codedock ...). Skippable via
 # SKIP_NOTARIZE=1 for local dev builds. Override with NOTARY_PROFILE=....
 # ---------------------------------------------------------------------------
-NOTARY_PROFILE="${NOTARY_PROFILE:-CodeIsland}"
+NOTARY_PROFILE="${NOTARY_PROFILE:-codedock}"
 if [ "${SKIP_NOTARIZE:-0}" = "1" ]; then
     echo "==> SKIP_NOTARIZE=1 — release DMG is not notarized"
 elif [ "$APP_SIGNED" != true ]; then

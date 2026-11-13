@@ -10,7 +10,7 @@ globs: []
 
 ## Pattern
 
-When debugging CodeIsland hooks or agy behavior, it is tempting to run
+When debugging codedock hooks or agy behavior, it is tempting to run
 `~/.local/bin/agy "some prompt"` inside the agent's `run_command` tool to
 trigger hook events and observe the notch UI.
 
@@ -25,8 +25,8 @@ indefinitely or error out before it even starts a session.
 
 1. **User opens their own interactive terminal**
 2. User runs: `~/.local/bin/agy "a prompt that triggers tool usage"`
-3. Agent watches for events in the bridge log (`/tmp/codeisland-bridge.log`)
-   or in the CodeIsland notch UI
+3. Agent watches for events in the bridge log (`/tmp/codedock-bridge.log`)
+   or in the codedock notch UI
 
 ### Simulating hook events from the agent shell
 
@@ -34,12 +34,12 @@ To test the bridge itself without needing `agy`, pipe a mock JSON payload
 directly to the bridge binary:
 
 ```bash
-CODEISLAND_DEBUG=1 echo '{
+CODEDOCK_DEBUG=1 echo '{
   "hook_event_name": "PreToolUse",
   "session_id": "test-sess",
   "tool_name": "Bash",
   "tool_input": {"command": "rm -rf bar"}
-}' | /Users/matthewgold/.codeisland/codeisland-bridge \
+}' | /Users/matthewgold/.codedock/codedock-bridge \
       --source gemini \
       --event BeforeTool
 ```

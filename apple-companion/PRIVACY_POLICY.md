@@ -1,8 +1,8 @@
-# Code Island Privacy Policy
+# codedock Privacy Policy
 
 Effective date: 2026-05-30
 
-Code Island is designed as a local Buddy for the Code Island Mac app. It mirrors the current session status from your Mac to your iPhone, Live Activity, Dynamic Island, StandBy, and Apple Watch.
+codedock is designed as a local Buddy for the codedock Mac app. It mirrors the current session status from your Mac to your iPhone, Live Activity, Dynamic Island, StandBy, and Apple Watch.
 
 ## Data Collection
 
@@ -12,9 +12,9 @@ The app does not use third-party analytics, advertising SDKs, tracking SDKs, or 
 
 ## Local Device Communication
 
-Code Island uses local network and Bluetooth capabilities to communicate between devices you own:
+codedock uses local network and Bluetooth capabilities to communicate between devices you own:
 
-- Local network discovery is used to find your Mac running Code Island.
+- Local network discovery is used to find your Mac running codedock.
 - MultipeerConnectivity is used to exchange session status and control commands between your iPhone and Mac.
 - Bluetooth may be used as a lightweight local signal for Buddy status updates.
 - WatchConnectivity is used to sync the latest state from your iPhone to your Apple Watch.
@@ -23,7 +23,7 @@ This communication happens locally between your devices. The developer does not 
 
 ## Data Shown in the App
 
-The app may display local session information from Code Island, such as:
+The app may display local session information from codedock, such as:
 
 - Current agent name and status
 - Workspace or session label
@@ -39,11 +39,11 @@ If you enable notifications or Live Activities, the app may show current session
 
 ## No Tracking
 
-Code Island does not track you across apps or websites.
+codedock does not track you across apps or websites.
 
 ## Children
 
-Code Island is a developer productivity Buddy and is not directed to children.
+codedock is a developer productivity Buddy and is not directed to children.
 
 ## Changes
 
@@ -53,4 +53,4 @@ This policy may be updated as the app changes. Material changes should be reflec
 
 For questions, open an issue at:
 
-https://github.com/fengye404/CodeIsland/issues
+https://github.com/chunkithwang/codedock/issues

@@ -4,16 +4,16 @@ description: >
   Neither --source gemini (agy CLI) nor --source google-antigravity include a
   cwd field in their hook payloads. The bridge must inject cwd from
   FileManager.default.currentDirectoryPath when the field is absent, otherwise
-  all CodeIsland UI cards (approval prompts, session cards) show "Session"
+  all codedock UI cards (approval prompts, session cards) show "Session"
   instead of the actual project folder name.
 globs:
-  - "Sources/CodeIslandBridge/main.swift"
+  - "Sources/CodedockBridge/main.swift"
 ---
 
 ## Pattern
 
 Gemini-based CLIs (`agy`, Google Antigravity) do not include a `cwd` field in
-the hook payload JSON they pipe to the bridge. CodeIsland's `SessionSnapshot`
+the hook payload JSON they pipe to the bridge. codedock's `SessionSnapshot`
 uses `cwd` to derive the display name shown in all UI cards:
 
 ```swift
@@ -26,7 +26,7 @@ public var displayName: String {
 ```
 
 Without `cwd`, every approval card and session card shows `"Session"` instead
-of e.g. `"codeisland-source"`.
+of e.g. `"codedock-source"`.
 
 ### Fix — inject in the bridge before serialization
 

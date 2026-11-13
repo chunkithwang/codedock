@@ -7,8 +7,8 @@ description: >
   have diverged before, causing one side to block while the other routes as a
   non-blocking event.
 globs:
-  - "Sources/CodeIslandBridge/main.swift"
-  - "Sources/CodeIsland/HookServer.swift"
+  - "Sources/CodedockBridge/main.swift"
+  - "Sources/Codedock/HookServer.swift"
 ---
 
 ## Pattern
@@ -18,8 +18,8 @@ permission/blocking event:
 
 | Location | Role |
 |----------|------|
-| `Sources/CodeIslandBridge/main.swift` — `isPermission` flag | Controls whether the bridge **blocks on the socket** waiting for a response (minutes/hours). Non-blocking events get a 1s recv timeout and return immediately. |
-| `Sources/CodeIsland/HookServer.swift` — `routeKind(for:)` | Controls which UI handler is invoked: `.permission` → `handlePermissionRequest`, `.question` → `handleQuestion`, `.event` → `handleEvent` (fire-and-forget). |
+| `Sources/CodedockBridge/main.swift` — `isPermission` flag | Controls whether the bridge **blocks on the socket** waiting for a response (minutes/hours). Non-blocking events get a 1s recv timeout and return immediately. |
+| `Sources/Codedock/HookServer.swift` — `routeKind(for:)` | Controls which UI handler is invoked: `.permission` → `handlePermissionRequest`, `.question` → `handleQuestion`, `.event` → `handleEvent` (fire-and-forget). |
 
 ### The failure mode
 

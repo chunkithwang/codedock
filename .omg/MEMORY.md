@@ -1,10 +1,10 @@
-# CodeIsland Project Memory
+# codedock Project Memory
 
 ## Architecture: Bridge + Server Permission Routing
 
 Two files must stay in sync for permission/blocking events:
-- `Sources/CodeIslandBridge/main.swift` — `isPermission` flag (controls socket blocking)
-- `Sources/CodeIsland/HookServer.swift` — `routeKind(for:)` (controls UI routing)
+- `Sources/CodedockBridge/main.swift` — `isPermission` flag (controls socket blocking)
+- `Sources/Codedock/HookServer.swift` — `routeKind(for:)` (controls UI routing)
 
 **Always update both** when adding new CLI source support. See rule:
 `.omg/rules/learned/hookserver-and-bridge-permission-routing-must-stay-in-sync.md`
@@ -37,8 +37,8 @@ See rules:
 
 To test bridge+server pipeline end-to-end, pipe a mock payload:
 ```bash
-CODEISLAND_DEBUG=1 echo '{"hook_event_name":"PreToolUse","session_id":"test","tool_name":"Bash","tool_input":{"command":"rm -rf bar"}}' \
-  | /Users/matthewgold/.codeisland/codeisland-bridge --source gemini --event BeforeTool
+CODEDOCK_DEBUG=1 echo '{"hook_event_name":"PreToolUse","session_id":"test","tool_name":"Bash","tool_input":{"command":"rm -rf bar"}}' \
+  | /Users/matthewgold/.codedock/codedock-bridge --source gemini --event BeforeTool
 ```
 
 Instruct the user to run `agy` from their own interactive terminal for real tests.
@@ -51,11 +51,11 @@ See rule: `.omg/rules/learned/agy-cannot-run-in-background-agent-shell.md`
 
 ```bash
 ./build.sh               # arm64-only build + bundle
-cp -R .build/release/CodeIsland.app /Applications/CodeIsland.app
-pkill -x CodeIsland; open /Applications/CodeIsland.app
+cp -R .build/release/codedock.app /Applications/codedock.app
+pkill -x codedock; open /Applications/codedock.app
 ```
 
-Bridge binary auto-extracts from app bundle to `~/.codeisland/codeisland-bridge` on first launch.
+Bridge binary auto-extracts from app bundle to `~/.codedock/codedock-bridge` on first launch.
 
 See rule:
 - `.omg/rules/learned/macos_app_bundle_overwrite.md`

@@ -1,29 +1,55 @@
 {
-  "fill" : "system-light",
+  "fill" : {
+    "automatic-gradient" : "srgb:0.00000,0.00000,0.00000,1.00000"
+  },
   "groups" : [
     {
       "layers" : [
         {
           "blend-mode" : "normal",
           "glass" : true,
-          "image-name" : "logo 2.svg",
-          "name" : "logo 2",
+          "image-name" : "console, terminal 2.svg",
+          "name" : "console, terminal 2",
           "position" : {
-            "scale" : 2,
+            "scale" : 1,
             "translation-in-points" : [
               0,
-              0
+              -80.67715028416683
             ]
           }
         }
       ],
       "shadow" : {
         "kind" : "neutral",
-        "opacity" : 0.5
+        "opacity" : 0.6
       },
       "translucency" : {
         "enabled" : true,
-        "value" : 0.5
+        "value" : 0.2
+      }
+    },
+    {
+      "layers" : [
+        {
+          "image-name" : "dock 4.svg",
+          "name" : "dock 4",
+          "opacity" : 0.48,
+          "position" : {
+            "scale" : 0.95,
+            "translation-in-points" : [
+              0,
+              222.02981483691474
+            ]
+          }
+        }
+      ],
+      "shadow" : {
+        "kind" : "neutral",
+        "opacity" : 0.6
+      },
+      "translucency" : {
+        "enabled" : true,
+        "value" : 0.2
       }
     }
   ],
