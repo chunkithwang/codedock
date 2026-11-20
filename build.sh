@@ -94,7 +94,14 @@ build_mac() {
     echo "Building $APP_NAME (arm64 only)..."
     swift build -c release --arch arm64
 
-    ARM_DIR=".build/arm64-apple-macosx/release"
+    if [ -x "$BUILD_DIR/$APP_NAME" ]; then
+        ARM_DIR="$BUILD_DIR"
+    elif [ -x ".build/arm64-apple-macosx/release/$APP_NAME" ]; then
+        ARM_DIR=".build/arm64-apple-macosx/release"
+    else
+        echo "Built executable not found in $BUILD_DIR or .build/arm64-apple-macosx/release" >&2
+        exit 1
+    fi
 
     echo "Creating app bundle..."
     rm -rf "$APP_BUNDLE"
@@ -152,7 +159,7 @@ build_mac() {
     fi
 
     # Copy SPM resource bundles into Contents/Resources/ (required for code signing)
-    for bundle in .build/*/release/*.bundle; do
+    for bundle in "$ARM_DIR"/*.bundle .build/*/release/*.bundle; do
         if [ -e "$bundle" ]; then
             cp -R "$bundle" "$APP_BUNDLE/Contents/Resources/"
             break
